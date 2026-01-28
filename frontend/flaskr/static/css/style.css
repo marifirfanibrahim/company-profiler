@@ -1,0 +1,8 @@
+/*
+main stylesheet
+imports all modules
+*/
+
+@import 'core.css';
+@import 'pages.css';
+@import 'dark-mode.css';

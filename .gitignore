@@ -1,0 +1,60 @@
+# ==================== PYTHON ====================
+
+# byte-compiled files
+**/__pycache__/
+
+# virtualenv
+venv/
+ENV/
+env/
+.venv/
+
+# ==================== DATA STORES ====================
+
+# sqlite database
+backend/data/stores/sqlite3.db
+
+# sqlite database (DBCode VScode extension) - to view/export tables
+backend/data/stores/sqlite3.db-wal
+backend/data/stores/sqlite3.db-shm
+
+# chromadb
+backend/data/stores/chroma_db/
+
+# selenium profile
+backend/data/stores/selenium_profile/
+
+# bursa backfill cursor state
+backend/data/stores/bursa_backfill.json
+
+# seed url cache
+backend/data/stores/seed_urls.json
+
+# seed entity list (generated)
+backend/data/stores/seed_entities.json
+
+# seed entity candidates (generated)
+backend/data/stores/seed_entity_candidates.json
+
+
+# ==================== MODELS ====================
+
+# custom models
+backend/configuration/custom_models.json
+
+
+# ==================== SELENIUM ====================
+
+# driver logs
+chromedriver.log
+geckodriver.log
+msedgedriver.log
+selenium.log
+
+
+# ==================== MISC ====================
+
+# environment variables
+.env
+.env.local
+.env.*.local

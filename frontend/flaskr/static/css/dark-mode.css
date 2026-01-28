@@ -1,0 +1,525 @@
+/*
+dark mode overrides
+all dark theme styles
+*/
+
+/* ==================== BASE ==================== */
+body.dark-mode {
+    background: linear-gradient(135deg, #2a0a14 0%, #1a0510 100%);
+    color: #ffffff;
+}
+
+body.dark-mode .container {
+    color: #ffffff;
+}
+
+body.dark-mode button:focus,
+body.dark-mode .btn:focus,
+body.dark-mode a:focus {
+    outline-color: #F16B8E;
+}
+
+
+/* ==================== HIGHLIGHT ==================== */
+body.dark-mode mark {
+    background: #5a4a00;
+    color: #ffd966;
+}
+
+
+/* ==================== HEADER ==================== */
+body.dark-mode header {
+    background: #4a1028;
+    color: #ffffff;
+}
+
+body.dark-mode header h1 {
+    color: #ffffff;
+}
+
+body.dark-mode nav a {
+    color: #ffffff;
+}
+
+body.dark-mode nav a:hover {
+    background: #2a0a14;
+}
+
+
+/* ==================== SEARCH ==================== */
+body.dark-mode .search-section {
+    background: #4a1028;
+    color: #ffffff;
+}
+
+body.dark-mode #searchQuery,
+body.dark-mode #historySearch,
+body.dark-mode select,
+body.dark-mode input[type="text"],
+body.dark-mode input[type="number"],
+body.dark-mode textarea {
+    background: #2a0a14;
+    color: #ffffff;
+    border-color: #5a1a38;
+}
+
+body.dark-mode #searchQuery:focus,
+body.dark-mode #historySearch:focus,
+body.dark-mode select:focus,
+body.dark-mode input[type="text"]:focus,
+body.dark-mode input[type="number"]:focus,
+body.dark-mode textarea:focus {
+    border-color: #7a2a58;
+}
+
+body.dark-mode #searchQuery::placeholder,
+body.dark-mode #historySearch::placeholder {
+    color: #888;
+}
+
+body.dark-mode .perspective-selector {
+    background: #2a0a14;
+    color: #ffffff;
+    border-color: #5a1a38;
+}
+
+body.dark-mode .perspective-selector:focus,
+body.dark-mode .perspective-selector:hover {
+    border-color: #7a2a58;
+}
+
+
+/* ==================== RESULTS ==================== */
+body.dark-mode .results-section,
+body.dark-mode .entity-list {
+    background: #4a1028;
+    color: #ffffff;
+}
+
+body.dark-mode .summary-card,
+body.dark-mode .entity-card,
+body.dark-mode .sources-section,
+body.dark-mode .relationships-section {
+    background: #3a1020;
+    border-color: #5a1a38;
+}
+
+body.dark-mode .fact-card {
+    background: #2a0a14;
+    border-color: #5a1a38;
+}
+
+body.dark-mode .fact-card p.fact-text {
+    color: #f0f0f0;
+}
+
+body.dark-mode .fact-sources li {
+    color: #aaa;
+}
+
+body.dark-mode .fact-sources a {
+    color: #F16B8E;
+}
+
+body.dark-mode .citation-link {
+    color: #F16B8E;
+}
+
+body.dark-mode .citation-link:hover {
+    background-color: #5a1a38;
+}
+
+body.dark-mode .snippet-content {
+    background-color: #3a1020;
+    border-left-color: #7a2a58;
+    color: #ccc;
+}
+
+body.dark-mode .snippet-content blockquote {
+    color: #aaa;
+    border-left-color: #5a1a38;
+}
+
+body.dark-mode .snippet-content a {
+    color: #F16B8E !important;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode .summary-card h2,
+body.dark-mode .entity-card h3 {
+    color: #ffffff;
+}
+
+body.dark-mode a {
+    color: #F16B8E;
+}
+
+body.dark-mode a:hover {
+    color: #ff8da1;
+}
+
+
+/* ==================== LOADING ==================== */
+body.dark-mode .loading {
+    background: #4a1028;
+    color: #ffffff;
+}
+
+body.dark-mode .loading p {
+    color: #ffffff;
+}
+
+
+/* ==================== ENTITY TAGS ==================== */
+body.dark-mode .entity-tag-more,
+body.dark-mode .entity-tag-less,
+body.dark-mode .search-time {
+    background: #3a1020;
+    color: #ffffff;
+}
+
+body.dark-mode .entity-tag-more:hover,
+body.dark-mode .entity-tag-less:hover,
+body.dark-mode .search-times:hover {
+    background: #4a2030;
+    color: #ff8da1;
+}
+
+
+/* ==================== ENTITIES RELATIONSHIPS ==================== */
+body.dark-mode .relationships-section li {
+    background: #4a1028;
+    color: #ffffff;
+    border-left-color: #F16B8E;
+}
+
+body.dark-mode .modal-relationship-item {
+    background: #3a1020;
+    color: #ffffff;
+    border-left-color: #F16B8E;
+}
+
+body.dark-mode .relationship-type-text {
+    color: #ccc;
+}
+
+body.dark-mode strong {
+    color: #ffffff;
+}
+
+body.dark-mode .entity-tag.org {
+    background: #5c1a34;
+    color: #ff8da1;
+}
+
+body.dark-mode .entity-tag.person {
+    background: #1a3a5c;
+    color: #8da1ff;
+}
+
+
+/* ==================== BADGES ==================== */
+
+body.dark-mode .search-time-badge {
+    background: #5c1a34;
+    color: #ff8da1;
+}
+
+body.dark-mode .confidence-badge.high {
+    background: #1e4620;
+    color: #90ee90;
+    border: 1px solid #2d5a2f;
+}
+
+body.dark-mode .confidence-badge.medium {
+    background: #5a4a00;
+    color: #ffd966;
+    border: 1px solid #7a6a2a;
+}
+
+body.dark-mode .confidence-badge.low {
+    background: #4a1e3c;
+    color: #ffb3ba;
+    border: 1px solid #7a2e5c;
+}
+
+body.dark-mode .model-badge {
+    background: linear-gradient(135deg, #4a1a5c 0%, #3a1a4c 100%);
+    color: #e1bee7;
+}
+
+
+/* ==================== MODAL ==================== */
+body.dark-mode .modal {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .modal-content {
+    background: #4a1028;
+    color: #ffffff;
+}
+
+body.dark-mode .modal-header {
+    border-bottom-color: #5a1a38;
+}
+
+body.dark-mode .modal-header h2,
+body.dark-mode .modal-section h3 {
+    color: #ffffff;
+}
+
+body.dark-mode .modal-section p {
+    color: #ffffff;
+}
+
+body.dark-mode .close {
+    color: #ffffff;
+    opacity: 0.5;
+}
+
+body.dark-mode .close:hover {
+    opacity: 1;
+}
+
+body.dark-mode .modal-summary,
+body.dark-mode .modal-sources li {
+    background: #3a1020;
+    color: #ffffff;
+    border-left-color: #F16B8E;
+}
+
+body.dark-mode .modal-sources a {
+    color: #F16B8E;
+}
+
+
+/* ==================== BUTTONS ==================== */
+body.dark-mode button {
+    color: white;
+}
+
+body.dark-mode .btn-secondary {
+    background: #3a1020;
+    color: #ffffff;
+    border: 1px solid #5a1a38;
+}
+
+body.dark-mode .btn-secondary:hover {
+    background: #4a2030;
+}
+
+body.dark-mode .btn-cancel {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+body.dark-mode .btn-cancel:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+}
+
+body.dark-mode .btn-danger {
+    background: linear-gradient(135deg, #F16B8E 0%, #D81B60 100%);
+}
+
+body.dark-mode .dark-mode-toggle {
+    background: linear-gradient(135deg, #B80640 0%, #8C0030 100%);
+}
+
+
+/* ==================== NOTIFICATIONS ==================== */
+body.dark-mode .floating-notification.success {
+    background: #1e4620;
+    color: #90ee90;
+    border-color: #2d5a2f;
+}
+
+body.dark-mode .floating-notification.error {
+    background: #4a1028;
+    color: #ffb3ba;
+    border-color: #7a2a48;
+}
+
+body.dark-mode .floating-notification.info {
+    background: #1a3a4a;
+    color: #add8e6;
+    border-color: #2a5a6a;
+}
+
+
+/* ==================== SIDEBAR DARK MODE ==================== */
+body.dark-mode .sidebar {
+    background: linear-gradient(180deg, #2a0a14 0%, #1a0510 100%);
+}
+
+body.dark-mode .sidebar-header {
+    border-bottom-color: rgba(255,255,255,0.05);
+}
+
+body.dark-mode .nav-item {
+    color: rgba(255,255,255,0.7);
+}
+
+body.dark-mode .nav-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: white;
+}
+
+body.dark-mode .nav-item.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+body.dark-mode .sidebar-footer {
+    border-top-color: rgba(255,255,255,0.05);
+}
+
+body.dark-mode .main-content {
+    background: linear-gradient(135deg, #1a0a10 0%, #0d0508 100%);
+}
+
+
+/* ==================== TOPBAR DARK MODE ==================== */
+body.dark-mode .topbar {
+    background: #3a1020;
+    border-bottom-color: #5a1a38;
+}
+
+body.dark-mode .page-title {
+    color: #ffffff;
+}
+
+body.dark-mode .topbar .perspective-selector {
+    background: #2a0a14;
+    color: #ffffff;
+    border-color: #5a1a38;
+}
+
+body.dark-mode .topbar .perspective-selector:focus,
+body.dark-mode .topbar .perspective-selector:hover {
+    border-color: #7a2a58;
+}
+
+body.dark-mode .topbar .btn-link {
+    background: #3a1020;
+    color: #ffffff;
+    border: 1px solid #5a1a38;
+}
+
+body.dark-mode .topbar .btn-link:hover {
+    background: #4a2030;
+}
+
+
+/* ==================== HAMBURGER DARK MODE ==================== */
+body.dark-mode .hamburger-line {
+    background: #ffffff;
+}
+
+body.dark-mode .hamburger-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+body.dark-mode .sidebar-overlay {
+    background: rgba(0,0,0,0.7);
+}
+
+
+/* ==================== SOURCES AND PROFILE SOURCES ==================== */
+
+body.dark-mode .sources-section {
+    background: #3a1020;
+    color: #ffffff;
+}
+
+body.dark-mode .sources-section h3 {
+    color: #ffffff;
+}
+
+body.dark-mode .sources-section a {
+    color: #F16B8E;
+}
+
+body.dark-mode .sources-section a:hover {
+    color: #ff8da1;
+}
+
+body.dark-mode .profile-sources-list {
+    color: #ffffff;
+}
+
+body.dark-mode .profile-source-label {
+    color: #f0f0f0;
+}
+
+body.dark-mode .profile-source-sublist li {
+    color: #f0f0f0;
+}
+
+body.dark-mode .profile-source-date {
+    color: #ccc;
+}
+
+body.dark-mode .source-date {
+    color: #ccc;
+}
+
+
+/* ==================== ENTITY / PROFILE CARDS ==================== */
+
+body.dark-mode .entity-card {
+    background: #3a1020;
+    border-color: #5a1a38;
+    color: #ffffff;
+}
+
+body.dark-mode .profile-field-card {
+    background: #2a0a14;
+    border-color: #5a1a38;
+}
+
+body.dark-mode .profile-field-label {
+    color: #aaa;
+}
+
+body.dark-mode .profile-field-value {
+    color: #f0f0f0;
+}
+
+body.dark-mode .profile-field-subvalue {
+    color: #ccc;
+}
+
+body.dark-mode .profile-field-name {
+    color: #f0f0f0;
+}
+
+
+/* ==================== TABLES ==================== */
+
+body.dark-mode .cases-table-card {
+    background: #3a1020; 
+    border-left-color: #F16B8E;
+}
+
+body.dark-mode .cases-table-header h3 {
+    color: #ffffff;
+}
+
+body.dark-mode .cases-table th,
+body.dark-mode .cases-table td {
+    border-color: #5a1a38;
+}
+
+body.dark-mode .cases-table th {
+    background: #4a2030;
+    color: #fff;
+}
+
+body.dark-mode .cases-table td a {
+    color: #F16B8E;
+}
+
+body.dark-mode .cases-table td a:hover {
+    color: #ff8da1;
+}

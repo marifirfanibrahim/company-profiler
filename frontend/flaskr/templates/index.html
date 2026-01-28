@@ -1,0 +1,285 @@
+<!--
+main search page layout
+sidebar navigation
+topbar with model controls
+search input interface
+results display area
+snapshot and profile cards
+export controls
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BZINT3 - Main</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- sidebar overlay for mobile -->
+    <div class="sidebar-overlay"></div>
+    
+    <!-- layout wrapper -->
+    <div class="app-layout">
+        
+        <!-- ================ SIDEBAR ================ -->
+        <aside class="sidebar">
+            <!-- logo -->
+            <div class="sidebar-header">
+                <h1 class="sidebar-logo">BZINT3</h1>
+            </div>
+            
+            <!-- recent searches section -->
+            <div class="sidebar-section">
+                <div id="sidebarRecentSearches" class="sidebar-recent-list">
+                    <!-- populated by js -->
+                </div>
+            </div>
+            
+            <!-- sidebar footer -->
+            <div class="sidebar-footer">
+                <p class="sidebar-version">v{{ config.APP_VERSION }}</p>
+            </div>
+        </aside>
+        
+        <!-- ================ MAIN CONTENT ================ -->
+        <main class="main-content">
+            
+            <!-- ================ TOPBAR ================ -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <!-- hamburger menu button -->
+                    <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+                    <!-- model selector -->
+                    <select id="modelSelector" class="model-selector">
+                        <!-- populated by js -->
+                    </select>
+                    <!-- manage models button -->
+                    <button id="manageModelsBtn" class="btn btn-secondary btn-small" title="Manage Models">Manage Models</button>
+                </div>
+                <div class="topbar-right">
+                </div>
+            </div>
+            
+            <div class="container">
+            
+                <!-- ================ SEARCH SECTION ================ -->
+                <div class="search-section">
+                    <!-- input field -->
+                    <input type="text" 
+                           id="searchQuery" 
+                           placeholder="Search for a company to see its profile..." />
+                    
+                    <!-- action buttons -->
+                    <button id="searchBtn" onclick="performSearch()">Search</button>
+                    <button id="cancelBtn" class="btn-cancel" onclick="cancelSearch()" style="display: none;">Cancel</button>
+                </div>
+
+
+                <!-- ================ LOADING INDICATOR ================ -->
+                <div id="loading" class="loading" style="display: none;">
+                    <!-- spinner animation -->
+                    <div class="spinner"></div>
+                    <p>Analyzing seeded sources...</p>
+                </div>
+                
+
+                <!-- ================ ERROR DISPLAY ================ -->
+                <div id="error" class="error-section" style="display: none;">
+                    <!-- error message text -->
+                    <p id="errorMessage"></p>
+                </div>
+
+
+                <!-- ================ RESULTS AREA ================ -->
+                <div id="results" class="results-section" style="display: none;">
+
+                    <!-- snapshot card -->
+                    <div class="summary-card">
+                        <div class="summary-header">
+                            <div class="summary-title-row">
+                                <h2>Snapshot of Company / Business Updates <span id="confidenceBadge" class="confidence-badge"></span></h2> 
+                            </div>
+                            <div class="summary-badges-row">
+                                <span id="modelBadge" class="model-badge"></span>
+                                <span id="searchTimeBadge" class="search-time-badge"></span>
+                            </div>
+                        </div>
+                        <div id="snapshotContainer"></div>
+                        <div id="snapshotSources" class="sources-section"></div>
+                    </div>
+                    
+                    <!-- customer and corporate guarantor cards -->
+                    <div class="entities-section">
+                        <!-- customer card -->
+                        <div class="entity-card" id="customer-card">
+                            <h3>Customer</h3>
+                            <div id="customerName" class="profile-field-name"></div>
+                            <div class="profile-field-card">
+                                <div class="profile-field-label">Rating</div>
+                                <div id="customerRating" class="profile-field-value"></div>
+                            </div>
+                            <div class="profile-field-card">
+                                <div class="profile-field-label">ESG Scorecard</div>
+                                <div id="customerEsg" class="profile-field-value"></div>
+                            </div>
+                            <div class="profile-field-card">
+                                <div class="profile-field-label">New Director</div>
+                                <div id="customerNewDirector" class="profile-field-value"></div>
+                                <div id="customerAppointmentDate" class="profile-field-subvalue"></div>
+                            </div>
+                            <div id="customerSources" class="sources-section"></div>
+                        </div>
+                        
+                        <!-- corporate guarantor card -->
+                        <div class="entity-card" id="guarantor-card">
+                            <h3>Corporate Guarantor</h3>
+                            <div id="guarantorName" class="profile-field-name"></div>
+                            <div class="profile-field-card">
+                                <div class="profile-field-label">Rating</div>
+                                <div id="guarantorRating" class="profile-field-value"></div>
+                            </div>
+                            <div class="profile-field-card">
+                                <div class="profile-field-label">ESG Scorecard</div>
+                                <div id="guarantorEsg" class="profile-field-value"></div>
+                            </div>
+                            <div class="profile-field-card">
+                                <div class="profile-field-label">New Director</div>
+                                <div id="guarantorNewDirector" class="profile-field-value"></div>
+                                <div id="guarantorAppointmentDate" class="profile-field-subvalue"></div>
+                            </div>
+                            <div id="guarantorSources" class="sources-section"></div>
+                        </div>
+                    </div>
+
+                    <!-- high risk entities / individuals table card -->
+                    <div class="cases-table-card" id="highRiskCard" style="margin-top: 20px;">
+                        <div class="cases-table-header">
+                            <h3>High Risk Entities / Individuals</h3>
+                        </div>
+                        <div id="highRiskTableContainer"></div>
+                        <div id="highRiskSources" class="sources-section"></div>
+                    </div>
+                                
+                    <!-- export buttons container -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="exportResults('txt')">
+                            Export as Text
+                        </button>
+                        <button class="btn btn-primary" onclick="exportResults('doc')">
+                            Export as DOC
+                        </button>
+                        <button class="btn btn-primary" onclick="exportResults('pdf')">
+                            Export as PDF
+                        </button>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </main>
+    </div>
+    
+    <!-- ================ MODEL MODAL ================ -->
+    <div id="modelModal" class="modal">
+        <!-- modal content box -->
+        <div class="modal-content" style="max-width: 800px;">
+            <!-- modal header -->
+            <div class="modal-header">
+                <h2>Manage Models</h2>
+                <span class="close" id="closeModelModal">&times;</span>
+            </div>
+            <!-- info section -->
+            <div class="modal-section">
+                <p class="modal-info-text" style="font-size: 14px; margin-bottom: 15px;">
+                    Custom models use the same Haystack generators as default models. 
+                    For Ollama, ensure the model is pulled locally. 
+                    For OpenAI-compatible APIs, provide the API key and optional base URL.
+                </p>
+            </div>
+            <!-- custom model list -->
+            <div class="modal-section" id="customModelListContainer">
+                <!-- populated by js -->
+            </div>
+            <!-- horizontal rule -->
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <!-- form section -->
+            <div class="modal-section" id="modelFormContainer">
+                <h3 id="modelFormTitle">Add New Model</h3>
+                <!-- form grid -->
+                <div class="settings-grid">
+                    <!-- id input -->
+                    <div class="setting-item">
+                        <label for="m_id">Model ID</label>
+                        <input type="text" id="m_id" placeholder="e.g., my_custom_model">
+                        <small>Required. Unique identifier for this model.</small>
+                    </div>
+                    <!-- name input -->
+                    <div class="setting-item">
+                        <label for="m_name">Display Name</label>
+                        <input type="text" id="m_name" placeholder="e.g., My Custom Model">
+                        <small>Required. The name shown in the dropdown.</small>
+                    </div>
+                </div>
+                <!-- provider select -->
+                <div class="setting-item" style="margin-top: 15px;">
+                    <label for="m_provider">Provider</label>
+                    <select id="m_provider" style="width: 100%;">
+                        <option value="ollama">Ollama (Local)</option>
+                        <option value="openai">OpenAI / OpenAI-Compatible</option>
+                        <option value="anthropic">Anthropic (Claude)</option>
+                    </select>
+                    <small>Select the model provider. Use "OpenAI" for any OpenAI-compatible API.</small>
+                </div>
+                <!-- actual model id -->
+                <div class="setting-item" style="margin-top: 15px;">
+                    <label for="m_actual_id">Actual Model ID</label>
+                    <input type="text" id="m_actual_id" placeholder="e.g., gpt-4o-mini, llama3:8b, mistral:7b">
+                    <small>The model identifier used by the provider's API.</small>
+                </div>
+                <!-- api key input -->
+                <div class="setting-item" style="margin-top: 15px;" id="apiKeyContainer">
+                    <label for="m_api_key">API Key</label>
+                    <input type="password" id="m_api_key" placeholder="Enter API key for this model">
+                    <small>Required for OpenAI. Leave empty to use environment variable.</small>
+                </div>
+                <!-- base url input -->
+                <div class="setting-item" style="margin-top: 15px;" id="baseUrlContainer">
+                    <label for="m_base_url">Base URL (optional)</label>
+                    <input type="text" id="m_base_url" placeholder="e.g., http://localhost:11434 or https://api.groq.com/openai/v1">
+                    <small>Custom API endpoint. Leave empty for default.</small>
+                </div>
+                <!-- description input -->
+                <div class="setting-item" style="margin-top: 15px;">
+                    <label for="m_desc">Description</label>
+                    <input type="text" id="m_desc" placeholder="e.g., Fast and affordable model">
+                    <small>Brief description of this model.</small>
+                </div>
+                <!-- form actions -->
+                <div class="action-buttons" style="justify-content: flex-end;">
+                    <button class="btn btn-secondary" id="cancelModelEditBtn" style="display: none;">Cancel Edit</button>
+                    <button class="btn btn-primary" id="saveModelBtn">Save Model</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- scripts -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="/static/js/ui_config.js"></script>
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/config.js"></script>
+    <script src="/static/js/search.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSidebar();
+        });
+    </script>
+</body>
+</html>

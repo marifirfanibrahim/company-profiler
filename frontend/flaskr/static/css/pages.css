@@ -1,0 +1,568 @@
+/*
+page specific styles
+search results history
+relationship graph
+custom perspectives modal
+topbar and controls
+per-fact confidence badges
+*/
+
+/* ==================== SEARCH ==================== */
+.search-section {
+    /* search container */
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 10px;
+    position: relative;
+    max-width: 100%;
+}
+
+#searchQuery {
+    /* input field */
+    flex: 1;
+    min-width: 0;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#searchQuery:focus {
+    /* focus state */
+    outline: none;
+    border-color: #B80640;
+}
+
+
+/* ==================== RESULTS ==================== */
+.results-section {
+    /* results container */
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.summary-card {
+    /* summary box */
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #B80640;
+}
+
+.summary-card h2 {
+    /* summary title */
+    color: #B80640;
+    margin-bottom: 15px;
+}
+
+.summary-header {
+    /* header layout */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.summary-title-row {
+    /* title container */
+    display: flex;
+    align-items: center;
+}
+
+.summary-title-row h2 {
+    /* remove margin from title */
+    margin: 0;
+}
+
+.summary-badges-row {
+    /* badges container */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#refreshResultsBtn {
+    /* refresh button */
+    padding: 6px 12px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 28px;
+}
+
+/* fact card styles */
+.fact-card {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+.fact-text {
+    margin: 0 0 12px 0;
+    line-height: 1.6;
+    font-size: 15px;
+    color: #333;
+}
+
+/* fact footer for confidence and citations */
+.fact-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+/* citations row */
+.fact-citations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+.fact-citations-label {
+    font-size: 12px;
+    color: #666;
+    margin-right: 4px;
+}
+
+/* per-fact confidence badge */
+.fact-confidence-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.fact-confidence-badge.high {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.fact-confidence-badge.medium {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.fact-confidence-badge.low {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.citation-link {
+    cursor: pointer;
+    color: #B80640;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 2px 6px;
+    transition: background-color 0.2s;
+    border-radius: 3px;
+    white-space: nowrap;
+    font-size: 12px;
+    background: #fce4ec;
+}
+
+.citation-link:hover {
+    background-color: #f8bbd9;
+    text-decoration: none;
+}
+
+.snippet-content {
+    background-color: #f5f5f5;
+    border-left: 3px solid #B80640;
+    padding: 12px 15px;
+    margin-top: 10px;
+    border-radius: 4px;
+    animation: fadeIn 0.3s;
+    font-size: 13px;
+}
+
+.snippet-content p {
+    margin: 0;
+}
+
+.snippet-content p a {
+    text-decoration: none !important;
+    color: #B80640;
+}
+
+.snippet-content p a:hover {
+    text-decoration: underline !important;
+}
+
+.snippet-content blockquote {
+    margin: 8px 0 0 0;
+    padding-left: 10px;
+    border-left: 2px solid #ccc;
+    font-style: italic;
+    color: #555;
+    max-height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ==================== CASES TABLE CARD ==================== */
+
+.cases-table-card {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #B80640;
+}
+
+.cases-table-header h3 {
+    color: #8C0030;
+    margin: 0 0 10px 0;
+}
+
+.cases-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    table-layout: fixed;
+}
+
+.cases-table th,
+.cases-table td {
+    border: 1px solid #e0e0e0;
+    padding: 8px 10px;
+    vertical-align: top;
+    word-wrap: break-word;
+}
+
+.cases-table th {
+    background: #f0f0f0;
+    font-weight: 600;
+    color: #333;
+}
+
+.cases-table td a {
+    color: #B80640;
+    text-decoration: none;
+}
+
+.cases-table td a:hover {
+    text-decoration: underline;
+}
+
+
+/* ==================== ENTITIES ==================== */
+.entities-section {
+    /* entities grid for profile cards */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+    align-items: stretch;
+}
+
+.entity-card {
+    /* entity / profile box */
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
+.entity-card h3 {
+    /* entity / profile title */
+    color: #8C0030;
+    margin-bottom: 8px;
+}
+
+.entity-card ul {
+    /* list style (legacy) */
+    list-style: none;
+}
+
+.entity-card li {
+    /* list item (legacy) */
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* ==================== PROFILE FIELDS ==================== */
+.profile-field-name {
+    /* profile name line */
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.profile-field-card {
+    /* profile field box */
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+.profile-field-label {
+    /* profile label */
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.profile-field-value {
+    /* profile main value */
+    font-size: 14px;
+    color: #333;
+}
+
+.profile-field-subvalue {
+    /* profile sub value */
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+
+
+/* ==================== SOURCES SUBLISTS ==================== */
+.profile-sources-list {
+    /* outer sources list */
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0 0 0;
+}
+
+.profile-sources-list li {
+    /* each field block */
+    display: block;
+    margin-bottom: 8px;
+    border-bottom: none;
+}
+
+.profile-source-label {
+    /* field label line */
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.profile-source-sublist {
+    /* inner source list */
+    display: block;
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 8px 0;
+}
+
+.profile-source-sublist li {
+    /* single source item */
+    display: block;
+    margin-bottom: 4px;
+    border-bottom: none;
+}
+
+.profile-source-date {
+    /* date stacked under title */
+    display: block;
+    font-size: 11px;
+    color: #999;
+    margin-left: 0;
+    margin-top: 2px;
+}
+
+
+/* ==================== SOURCES EXPAND ==================== */
+
+.sources-toggle-btn {
+    margin-top: 8px;
+}
+
+
+/* ==================== RELATIONSHIPS ==================== */
+.relationships-section {
+    /* relationship box (legacy) */
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.relationships-section h3 {
+    /* section title */
+    color: #8C0030;
+    margin-bottom: 15px;
+}
+
+.relationships-list {
+    /* list style */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.relationships-list li {
+    /* relation item */
+    padding: 12px;
+    margin: 8px 0;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #B80640;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.relationships-graph {
+    /* graph container */
+    width: 100%;
+    height: 500px;
+    background: white;
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+}
+
+.modal-relationships-list {
+    /* modal list */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-relationship-item {
+    /* modal item */
+    padding: 12px;
+    margin: 8px 0;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #B80640;
+}
+
+.relationship-type-text {
+    color: #666;
+    font-size: 12px;
+    margin: 0 5px;
+}
+
+
+/* ==================== CONFIDENCE TAG ==================== */
+.confidence-tag {
+    /* confidence label */
+    color: #666;
+    font-size: 12px;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+
+/* ==================== SOURCES ==================== */
+.sources-section {
+    /* source box below cards */
+    margin-top: 12px;
+}
+
+.sources-section h3 {
+    /* source title */
+    color: #8C0030;
+    margin-bottom: 8px;
+}
+
+.sources-section ul {
+    /* bullet list for sources */
+    list-style: disc;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.sources-section li {
+    /* each source item */
+    margin-bottom: 4px;
+}
+
+.sources-section a {
+    /* link style */
+    color: #B80640;
+    text-decoration: none;
+}
+
+.sources-section a:hover {
+    /* link hover */
+    text-decoration: underline;
+}
+
+.source-date {
+    /* date label */
+    color: #999;
+    font-size: 11px;
+    margin-left: 8px;
+}
+
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .entities-section,
+    .top-entities,
+    .settings-grid {
+        /* vertical stack */
+        grid-template-columns: 1fr;
+    }
+    
+    .search-section {
+        /* vertical search */
+        flex-direction: column;
+    }
+    
+    .history-controls {
+        /* stack controls */
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-controls,
+    .action-controls {
+        /* wrap controls */
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    
+    .filter-input {
+        /* full width */
+        width: 100%;
+    }
+    
+    .fact-citations {
+        /* wrap citations */
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .summary-header {
+        /* stack header */
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .summary-badges-row {
+        /* wrap badges */
+        flex-wrap: wrap;
+    }
+}
