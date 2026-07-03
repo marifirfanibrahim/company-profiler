@@ -58,3 +58,15 @@ selenium.log
 .env
 .env.local
 .env.*.local
+
+
+# ==================== LOCAL TOOLING & PLANNING (not committed) ====================
+
+# assistant/editor tooling
+.claude/
+CLAUDE.md
+AGENTS.md
+.mcp.json
+
+# local planning & working notes
+.planning/

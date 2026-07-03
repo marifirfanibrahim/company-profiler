@@ -42,7 +42,7 @@ from frontend.flaskr import create_app
 if __name__ == "__main__":
     # print startup header
     print("\n" + "=" * 70)
-    print("BZINT3 SYSTEM STARTUP")
+    print("company_profiler SYSTEM STARTUP")
     print("=" * 70 + "\n")
 
     # track initialization time

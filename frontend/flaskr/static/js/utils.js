@@ -642,7 +642,7 @@ function formatAsText(data) {
     const lines = [];
 
     // build header lines
-    lines.push('BZINT3 SEARCH RESULTS');
+    lines.push('company_profiler SEARCH RESULTS');
     lines.push('');
     lines.push(`Query: ${query || '-'}`);
     if (modelId) {
@@ -759,7 +759,7 @@ function formatAsHtmlDoc(data) {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>BZINT3 Export</title>
+  <title>company_profiler Export</title>
   <style>
     body { font-family: Arial, sans-serif; font-size: 12pt; }
     h1 { font-size: 16pt; }
@@ -845,7 +845,7 @@ function exportPdfWithTable(data, filenameBase) {
     doc.setTextColor(184, 6, 64);
 
     // write title
-    const title = 'BZINT3 Search Results';
+    const title = 'company_profiler Search Results';
     doc.text(title, margin, margin);
 
     // reset text color

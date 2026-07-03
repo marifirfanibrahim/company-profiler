@@ -1,4 +1,4 @@
-# BZINT3
+# Company Profiler
 Business intelligence reports based on open source data. This project is a Retrieval-Augmented Generation (RAG) system. It is designed to obtain information from the queried company, the snapshot or business updates, customer profiles, corporate guarantor profiles, and the high-risk entities and individuals.
 
 ## Table of Contents
@@ -58,7 +58,7 @@ Shows how the entities is involved in data collection. Entities used in seeding 
 ### High-Level Map
 
 ```
-bzint3
+company_profiler
 ├── README.md
 ├── backend/
 ├── frontend/
@@ -241,8 +241,8 @@ Before you begin, ensure you have the following installed on your system:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/marifirfanibrahim/bzint3.git
-    cd bzint3
+    git clone https://github.com/marifirfanibrahim/company_profiler.git
+    cd company_profiler
     ```
 
 2.  **Install dependencies:**

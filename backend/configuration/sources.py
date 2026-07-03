@@ -13,7 +13,7 @@ from backend.helpers.persist.json_utils import load_json
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"  # default browser ua
 
 # user agent with app identification for apis
-USER_AGENT_BOT = "BZINT3/1.3.1 (Business Intelligence Research; https://github.com/marifirfanibrahim/bzint3)"  # default bot ua
+USER_AGENT_BOT = "company_profiler/1.3.1 (Business Intelligence Research; https://github.com/marifirfanibrahim/company_profiler)"  # default bot ua
 
 
 # ==================== RSS FEED CONFIGURATIONS ====================

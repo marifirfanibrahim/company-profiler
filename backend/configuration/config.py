@@ -236,7 +236,7 @@ class Config:
 
     # ------------------ CHROMADB ------------------
 
-    CHROMA_COLLECTION_NAME = "bzint3_store"               # default bzint3_store
+    CHROMA_COLLECTION_NAME = "company_profiler_store"               # default company_profiler_store
 
 
     # ------------------ ANALYTICS ------------------

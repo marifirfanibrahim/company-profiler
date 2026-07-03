@@ -665,7 +665,7 @@ function exportResults(format) {
     const baseName = rawQuery || 'search';
     const safeQuery = baseName.replace(/[^\w\-]+/g, '_').slice(0, 50) || 'search';
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-    const filenameBase = `bzint3_${safeQuery}_${timestamp}`;
+    const filenameBase = `company_profiler_${safeQuery}_${timestamp}`;
 
     if (format === 'txt') {
         const content = formatAsText(currentResults);

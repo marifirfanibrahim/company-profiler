@@ -234,7 +234,7 @@ def about():
     # return app information
     return jsonify(
         {
-            "name": "BZINT3",
+            "name": "company_profiler",
             "version": f"{Config.APP_VERSION}",
             "description": "business intelligence reports based on open source data",
         }
