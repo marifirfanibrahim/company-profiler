@@ -109,21 +109,23 @@ def _create_ollama_generator(config, model_id: str, model_config: dict = None):
 # ==================== OPENAI GENERATOR ====================
 
 def _create_openai_generator(config, model_config: dict):
-    # create haystack openai generator
-    from haystack.components.generators import OpenAIGenerator
-
     # read model fields
     model_id = model_config.get("model_id") or config.DEFAULT_OPENAI_MODEL
     api_key = model_config.get("api_key") or config.OPENAI_API_KEY
     base_url = model_config.get("base_url")
 
     # fail fast when the openai provider is selected but no key resolved
+    # (checked before the haystack import so the fail-fast fires even if the
+    # installed haystack-ai version has moved/renamed the generator class)
     if not api_key or not str(api_key).strip():
         raise ValueError(
             f"OPENAI_API_KEY is not set and model '{model_id}' has no model-level "
             f"api_key override. Set OPENAI_API_KEY in your .env file or supply an "
             f"api_key on the model config."
         )
+
+    # create haystack openai generator
+    from haystack.components.generators import OpenAIGenerator
 
     # print selected model
     print(f"[GENERATOR] Using OpenAI model: {model_id}")
