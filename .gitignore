@@ -18,8 +18,8 @@ backend/data/stores/sqlite3.db
 backend/data/stores/sqlite3.db-wal
 backend/data/stores/sqlite3.db-shm
 
-# chromadb
-backend/data/stores/chroma_db/
+# chromadb (matches chroma_db/, chroma_db_4/, chroma_db_test/, etc.)
+backend/data/stores/chroma_db*/
 
 # selenium profile
 backend/data/stores/selenium_profile/
