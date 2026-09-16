@@ -117,6 +117,14 @@ def _create_openai_generator(config, model_config: dict):
     api_key = model_config.get("api_key") or config.OPENAI_API_KEY
     base_url = model_config.get("base_url")
 
+    # fail fast when the openai provider is selected but no key resolved
+    if not api_key or not str(api_key).strip():
+        raise ValueError(
+            f"OPENAI_API_KEY is not set and model '{model_id}' has no model-level "
+            f"api_key override. Set OPENAI_API_KEY in your .env file or supply an "
+            f"api_key on the model config."
+        )
+
     # print selected model
     print(f"[GENERATOR] Using OpenAI model: {model_id}")
     if base_url:
@@ -300,6 +308,14 @@ def _create_anthropic_generator(config, model_config: dict):
     api_key = model_config.get("api_key") or config.ANTHROPIC_API_KEY
     base_url = model_config.get("base_url") or "https://api.anthropic.com/v1"
     api_version = config.ANTHROPIC_API_VERSION
+
+    # fail fast when the anthropic provider is selected but no key resolved
+    if not api_key or not str(api_key).strip():
+        raise ValueError(
+            f"ANTHROPIC_API_KEY is not set and model '{model_id}' has no model-level "
+            f"api_key override. Set ANTHROPIC_API_KEY in your .env file or supply an "
+            f"api_key on the model config."
+        )
 
     # print selected model
     print(f"[GENERATOR] Using Anthropic model: {model_id}")
