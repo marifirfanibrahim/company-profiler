@@ -6,6 +6,8 @@ run tesseract ocr
 
 from pathlib import Path
 import io
+import logging
+import shutil
 from typing import List
 from urllib.parse import urljoin
 
@@ -15,22 +17,36 @@ import pytesseract
 
 from backend.helpers.fetch.httpx_helpers import build_httpx_client, resolve_tls_verify
 
+# module-level logger
+logger = logging.getLogger(__name__)
+
 
 # ==================== TESSERACT ====================
 
 def configure_tesseract(tesseract_cmd: str) -> bool:
-    # set tesseract command path
+    # set tesseract command path, falling back to PATH lookup
     cmd = str(tesseract_cmd or "").strip()
-    if not cmd:
+
+    if cmd:
+        # validate configured path exists
+        p = Path(cmd)
+        if p.exists():
+            pytesseract.pytesseract.tesseract_cmd = str(p)
+            return True
+        # configured path doesn't exist — fall through to PATH lookup
+        logger.warning(f"[OCR] configured OCR_TESSERACT_CMD '{cmd}' does not exist, trying PATH")
+
+    # fall back to PATH-based discovery
+    found = shutil.which("tesseract")
+    if not found:
+        logger.info(
+            "[OCR] tesseract binary not found (configured path invalid and not on PATH) — "
+            "OCR disabled for this run"
+        )
         return False
 
-    # validate path exists
-    p = Path(cmd)
-    if not p.exists():
-        return False
-
-    # set command
-    pytesseract.pytesseract.tesseract_cmd = str(p)
+    # set command from resolved path
+    pytesseract.pytesseract.tesseract_cmd = found
     return True
 
 
@@ -124,17 +140,30 @@ def fetch_image_bytes(client, url: str, max_bytes: int) -> bytes:
 
 # ==================== OCR ====================
 
-def ocr_image_bytes(image_bytes: bytes, lang: str) -> str:
-    # run ocr on image bytes
+def ocr_image_bytes(image_bytes: bytes, lang: str, timeout: int = 10) -> str:
+    # run ocr on image bytes, degrading to empty string on any failure
     if not image_bytes:
         return ""
 
-    # open image
-    img = Image.open(io.BytesIO(image_bytes))
+    try:
+        # open image
+        img = Image.open(io.BytesIO(image_bytes))
 
-    # run tesseract
-    text = pytesseract.image_to_string(img, lang=str(lang or ""))
-    return str(text or "").strip()
+        # run tesseract with a subprocess timeout
+        text = pytesseract.image_to_string(img, lang=str(lang or ""), timeout=int(timeout))
+        return str(text or "").strip()
+    except pytesseract.pytesseract.TesseractNotFoundError:
+        # binary vanished between configure and run
+        logger.warning("[OCR] tesseract binary vanished between configure and run — skipping")
+        return ""
+    except RuntimeError:
+        # pytesseract raises RuntimeError on subprocess timeout
+        logger.warning(f"[OCR] tesseract timed out after {timeout}s — skipping image")
+        return ""
+    except Exception as e:
+        # covers PIL decode errors (UnidentifiedImageError etc.) and anything else
+        logger.warning(f"[OCR] image decode/OCR failed: {e} — skipping image")
+        return ""
 
 
 def ocr_from_html_images(
@@ -183,7 +212,7 @@ def ocr_from_html_images(
                 continue
 
             # run ocr
-            text = ocr_image_bytes(image_bytes=data, lang=lang)
+            text = ocr_image_bytes(image_bytes=data, lang=lang, timeout=timeout)
             if not text:
                 continue
 
