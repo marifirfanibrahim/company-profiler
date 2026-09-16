@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 from PIL import Image
 import pytesseract
 
-from backend.helpers.fetch.httpx_helpers import build_httpx_client
+from backend.helpers.fetch.httpx_helpers import build_httpx_client, resolve_tls_verify
 
 
 # ==================== TESSERACT ====================
@@ -169,7 +169,7 @@ def ocr_from_html_images(
         timeout=timeout,
         headers=headers,
         follow_redirects=bool(config.HTTP_FOLLOW_REDIRECTS),
-        verify=bool(config.HTTP_VERIFY_TLS),
+        verify=resolve_tls_verify(config, source_id="ocr"),
     ) as client:
         parts = []
         for u in urls:

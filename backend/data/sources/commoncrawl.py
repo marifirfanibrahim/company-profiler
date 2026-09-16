@@ -25,7 +25,7 @@ from backend.configuration.sources import (
     USER_AGENT_BOT,
 )
 from backend.helpers.fetch.source_helpers import create_document, log_results
-from backend.helpers.fetch.httpx_helpers import build_httpx_client
+from backend.helpers.fetch.httpx_helpers import build_httpx_client, resolve_tls_verify
 
 
 # ==================== COMMON CRAWL RETRIEVER ====================
@@ -79,7 +79,7 @@ class CommonCrawlRetriever:
             timeout=self.timeout,
             headers=self._get_headers(),
             follow_redirects=bool(self.config.HTTP_FOLLOW_REDIRECTS),
-            verify=bool(self.config.HTTP_VERIFY_TLS),
+            verify=resolve_tls_verify(self.config, source_id=self.source_id),
             force_connection_close=bool(self.config.COMMONCRAWL_FORCE_CONNECTION_CLOSE),
         )
 
@@ -358,7 +358,7 @@ class CommonCrawlRetriever:
             timeout=self.timeout,
             headers=headers,
             follow_redirects=bool(self.config.HTTP_FOLLOW_REDIRECTS),
-            verify=bool(self.config.HTTP_VERIFY_TLS),
+            verify=resolve_tls_verify(self.config, source_id=self.source_id),
             force_connection_close=bool(self.config.COMMONCRAWL_FORCE_CONNECTION_CLOSE),
         ) as client:
             # fetch byte range

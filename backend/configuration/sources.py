@@ -183,7 +183,7 @@ if isinstance(_loaded_indices, list):
 else:
     COMMONCRAWL_INDICES = []                                          # empty indices
 
-COMMONCRAWL_INDEX_URL = "http://index.commoncrawl.org/{crawl_id}-index"  # index api url
+COMMONCRAWL_INDEX_URL = "https://index.commoncrawl.org/{crawl_id}-index"  # index api url
 COMMONCRAWL_S3_BASE = "https://data.commoncrawl.org"                  # s3 base url
 
 COMMONCRAWL_TARGET_DOMAINS = [

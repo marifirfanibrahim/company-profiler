@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 from backend.configuration.sources import USER_AGENT
 from backend.helpers.parse.pdf_utils import extract_pdf_text_from_bytes
 from backend.helpers.parse.ocr_helpers import ocr_from_html_images
-from backend.helpers.fetch.httpx_helpers import build_httpx_client
+from backend.helpers.fetch.httpx_helpers import build_httpx_client, resolve_tls_verify
 from backend.helpers.parse.date_helpers import (
     DATE_PATTERNS,
     parse_yyyy_mm_dd,
@@ -162,7 +162,7 @@ class ContentExtractor:
             timeout=self.timeout,
             headers=headers,
             follow_redirects=bool(self.config.HTTP_FOLLOW_REDIRECTS),
-            verify=bool(self.config.HTTP_VERIFY_TLS),
+            verify=resolve_tls_verify(self.config, source_id="content_extractor"),
         ) as client:
             # run request
             return client.get(url)

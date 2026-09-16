@@ -2,11 +2,35 @@
 build httpx client
 apply pool limits
 apply tls config
+resolve per-source tls verification with a logged opt-out
 """
 
+import logging
 from typing import Dict, Optional
 
 import httpx
+
+# module-level logger
+logger = logging.getLogger(__name__)
+
+
+# ============== TLS ==============
+
+def resolve_tls_verify(config, source_id: str) -> bool:
+    # check for a per-source opt-out
+    exceptions = getattr(config, "HTTP_VERIFY_TLS_EXCEPTIONS", set())
+
+    if source_id in exceptions:
+        # log the opt-out before disabling verification
+        logger.warning(
+            f"[TLS] certificate verification disabled for source '{source_id}' "
+            f"via HTTP_VERIFY_TLS_EXCEPTIONS — traffic to this source is not "
+            f"protected against MITM tampering"
+        )
+        return False
+
+    # default to the global config flag
+    return bool(config.HTTP_VERIFY_TLS)
 
 
 # ============== CLIENT ==============

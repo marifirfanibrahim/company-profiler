@@ -15,7 +15,7 @@ from haystack.dataclasses import Document
 from backend.configuration.sources import USER_AGENT
 from backend.configuration.case import SC_ENFORCEMENT_URL_KEYWORDS
 from backend.helpers.fetch.source_helpers import create_document, log_source_status
-from backend.helpers.fetch.httpx_helpers import build_httpx_client
+from backend.helpers.fetch.httpx_helpers import build_httpx_client, resolve_tls_verify
 
 
 # ==================== OFFICIAL SOURCES RETRIEVER ====================
@@ -266,7 +266,7 @@ class OfficialCasesRetriever:
             timeout=self.timeout,
             headers=headers,
             follow_redirects=bool(self.config.HTTP_FOLLOW_REDIRECTS),
-            verify=bool(self.config.HTTP_VERIFY_TLS),
+            verify=resolve_tls_verify(self.config, source_id=self.source_id),
         ) as client:
             for site in self.sites:
                 # cap docs

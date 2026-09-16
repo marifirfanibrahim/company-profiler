@@ -23,7 +23,7 @@ from backend.configuration.sources import (
     MARC_RATINGS_DROP_QUERY_TOKENS,
     USER_AGENT,
 )
-from backend.helpers.fetch.httpx_helpers import build_httpx_client
+from backend.helpers.fetch.httpx_helpers import build_httpx_client, resolve_tls_verify
 from backend.helpers.fetch.source_helpers import create_document, log_source_status
 from backend.helpers.parse.text_helpers import clean_block_text
 
@@ -275,7 +275,7 @@ class MARCRatingsRetriever:
         headers = self._get_headers()
 
         # read tls flag
-        verify = bool(self.config.HTTP_VERIFY_TLS)
+        verify = resolve_tls_verify(self.config, source_id=self.source_id)
 
         documents: List[Document] = []
 
