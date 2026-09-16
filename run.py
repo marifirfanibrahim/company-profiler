@@ -20,6 +20,10 @@ os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 os.environ["USE_TF"] = "0"
 os.environ["USE_TORCH"] = "1"
 
+# load .env into os.environ before any backend/frontend import reads it
+from dotenv import load_dotenv
+load_dotenv()
+
 # suppress library warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -32,6 +36,9 @@ warnings.filterwarnings("ignore", message=".*sentencepiece.*")
 # add project root to python path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
+
+# import env reader before the config class tree loads
+from backend.configuration.env_helpers import env_str
 
 # import flask app factory
 from frontend.flaskr import create_app
@@ -48,8 +55,16 @@ if __name__ == "__main__":
     # track initialization time
     start_time = time.time()
 
+    # read requested environment; fail fast on an unrecognized value
+    _VALID_FLASK_ENVS = {"development", "production", "testing"}
+    flask_env = env_str("FLASK_ENV", default="production")
+    if flask_env not in _VALID_FLASK_ENVS:
+        raise RuntimeError(
+            f"FLASK_ENV='{flask_env}' is not one of {sorted(_VALID_FLASK_ENVS)}"
+        )
+
     # create flask application
-    app = create_app("production")
+    app = create_app(flask_env)
 
     # retrieve components
     comps = app.components

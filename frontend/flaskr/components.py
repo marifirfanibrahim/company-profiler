@@ -20,9 +20,9 @@ def init_components(app):
     # print initialization header
     print("=" * 20 + " COMPONENTS INITIALIZATION " + "=" * 20 + "\n")
 
-    # get environment from app config
-    env = app.config.get("ENV", "development")
-    config_class = config_dict.get(env, config_dict["default"])
+    # get environment from app config, trust it, no silent default fallback
+    env = app.config["ENV"]
+    config_class = config_dict[env]
 
     # create components storage dict
     components = {
