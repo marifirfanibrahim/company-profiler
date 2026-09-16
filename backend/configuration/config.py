@@ -7,6 +7,7 @@ no defaults - fail fast on missing config
 """
 
 from backend.configuration.labels import ENTITY_LABELS, RELATIONSHIP_LABELS, QUERY_ENTITY_LABELS
+from backend.configuration.env_helpers import env_str, env_bool, env_int
 
 
 # ==================== BASE CONFIGURATION ====================
@@ -64,9 +65,10 @@ class Config:
 
     # ------------------ API KEYS ------------------
 
-    OPENAI_API_KEY = "sk-proj-xxx"                        # default placeholder
-    ANTHROPIC_API_KEY = "sk-ant-api03-xxx"                # default placeholder
+    OPENAI_API_KEY = env_str("OPENAI_API_KEY", default=None)      # default none, sourced from env
+    ANTHROPIC_API_KEY = env_str("ANTHROPIC_API_KEY", default=None)  # default none, sourced from env
     ANTHROPIC_API_VERSION = "2023-06-01"                  # default 2023-06-01
+    SECRET_KEY = env_str("FLASK_SECRET_KEY", default=None)  # default none, sourced now, enforced in Phase 3
 
 
     # ------------------ FEATURES ------------------
@@ -136,7 +138,7 @@ class Config:
     # ------------------ OCR ------------------
 
     OCR_ENABLED = False                                   # default false
-    OCR_TESSERACT_CMD = "C:\\path\\to\\tesseract.exe"     # default placeholder
+    OCR_TESSERACT_CMD = env_str("OCR_TESSERACT_CMD", default=None)  # default none, sourced from env
     OCR_LANG = "eng-ms"                                   # default eng-ms
     OCR_TIMEOUT = 10                                      # default 10
     OCR_MAX_IMAGES = 3                                    # default 3
@@ -323,7 +325,11 @@ class Config:
     HTTP_MAX_KEEPALIVE_CONNECTIONS = 20                   # default 20
     HTTP_MAX_CONNECTIONS = 100                            # default 100
 
-    HTTP_VERIFY_TLS = False                               # default false
+    HTTP_VERIFY_TLS = env_bool("HTTP_VERIFY_TLS", default=True)  # default true, CFG-04 flip
+    HTTP_VERIFY_TLS_EXCEPTIONS = set()                    # default empty, per-source opt-out keys
+                                                           # valid keys as of this phase:
+                                                           # official_sources, bursa, ram_ratings,
+                                                           # marc_ratings, commoncrawl, plus RSS feed ids
     HTTP_FOLLOW_REDIRECTS = True                          # default true
     HTTP_FORCE_CONNECTION_CLOSE = False                   # default false
 
