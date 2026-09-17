@@ -259,23 +259,40 @@ Before you begin, ensure you have the following installed on your system:
     uv venv --python 3.10
     uv pip sync requirements.lock
     ```
-    `uv venv` does not install pip into the environment, so use `uv pip` for later package commands, or create the venv with `uv venv --seed --python 3.10` if you need `pip` itself.
+    These `uv` commands are the same in PowerShell and Git Bash, and none of them needs the venv to be activated. `uv venv` does not install pip into the environment, so use `uv pip` for later package commands, or create the venv with `uv venv --seed --python 3.10` if you need `pip` itself.
 
     **Option B: pip**
+
+    PowerShell:
     ```powershell
     python -m venv .venv
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
     .venv\Scripts\Activate.ps1
     pip install -r requirements.lock
     ```
+    Git Bash:
+    ```bash
+    python -m venv .venv
+    source .venv/Scripts/activate
+    pip install -r requirements.lock
+    ```
     (run `python -m venv` with a Python 3.10.2 or newer 3.10.x interpreter)
+
+    > - On a default Windows client, PowerShell's execution policy blocks `Activate.ps1` with "running scripts is disabled on this system". `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` lifts that for the current PowerShell window only and leaves the machine and user policy unchanged; run it again in each new window before activating.
 
     > - `requirements.lock` holds the exact tested versions and is the supported install path. `requirements.txt` holds the version ranges and upper bounds (with each bound's reason in a comment) and is only the input for regenerating the lock.
     > - The lock targets Windows x64 (`win_amd64`) with CPython 3.10.2 or newer 3.10.x (tested on 3.10.20); see the Linux Note below.
     > - `seqeval` 1.2.2 has no wheel on PyPI, so a first install on a machine with a cold package cache builds it from source and needs network access for that build.
 
 3.  **Create the `.env` file:**
+
+    PowerShell:
     ```powershell
     Copy-Item .env.example .env
+    ```
+    Git Bash:
+    ```bash
+    cp .env.example .env
     ```
     Then set the following keys (see `.env.example` for placeholders):
     - `FLASK_ENV`: `development`, `production` or `testing`; when unset the app runs as `production`.
@@ -303,22 +320,43 @@ The first `python run.py` downloads the Hugging Face models used by the pipeline
 
 The commit IDs above were observed in the 2026-09-17 boot check and are documentation only; the app does not pin model revisions.
 
-**IMPORTANT!** Before the first run, set `DISABLE_SAFETENSORS_CONVERSION=true` in your shell:
+**IMPORTANT!** Before the first run, set `DISABLE_SAFETENSORS_CONVERSION=true` in your shell.
+
+PowerShell:
 ```powershell
 $env:DISABLE_SAFETENSORS_CONVERSION = "true"
+```
+Git Bash:
+```bash
+export DISABLE_SAFETENSORS_CONVERSION=true
 ```
 Without it, `transformers` starts a background download of an extra ~874 MB safetensors copy of `microsoft/deberta-v3-large` that the app does not need, and that download competes with the real model downloads for bandwidth.
 
 **Optional pre-download** of the largest model, the reranker (about 2.3 GB; an interrupted download resumes when re-run). With the venv active:
+
+PowerShell:
 ```powershell
 $env:DISABLE_SAFETENSORS_CONVERSION = "true"
 hf download BAAI/bge-reranker-v2-m3
 ```
+Git Bash:
+```bash
+export DISABLE_SAFETENSORS_CONVERSION=true
+hf download BAAI/bge-reranker-v2-m3
+```
 
 **Moving the caches:** to keep models or NLTK data somewhere else, set `HF_HOME` and/or `NLTK_DATA` in the shell before `python run.py` — not in `.env`, because a value in `.env` is ignored when the variable is already set in the environment. Example (paths below are illustrative):
+
+PowerShell:
 ```powershell
 $env:HF_HOME = "D:\hf-cache"
 $env:NLTK_DATA = "D:\nltk_data"
+python run.py
+```
+Git Bash:
+```bash
+export HF_HOME=/d/hf-cache
+export NLTK_DATA=/d/nltk_data
 python run.py
 ```
 
@@ -330,10 +368,19 @@ python run.py
     ```
 
 2.  **Run application**
+
+    PowerShell:
     ```powershell
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
     .venv\Scripts\Activate.ps1
     python run.py
     ```
+    Git Bash:
+    ```bash
+    source .venv/Scripts/activate
+    python run.py
+    ```
+    Or, in either shell and without activating the venv: `uv run python run.py`.
 
 3.  **Access web interface**:
     **`http://localhost:5000`**
