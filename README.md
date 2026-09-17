@@ -241,7 +241,7 @@ Before you begin, ensure you have the following installed on your system:
     ollama pull llama3:8b
     ```
 4.  **Google Chrome**: used by Selenium for Bursa Malaysia scraping.
-5. (OPTIONAL) **Tesseract-OCR**: download it from [tesseract-ocr.com](https://tesseract-ocr.com/#download). Set `OCR_TESSERACT_CMD` in `.env` to its install path; OCR is skipped when it is not configured.
+5. (OPTIONAL) **Tesseract-OCR**: install it by following the [official Tesseract installation docs](https://tesseract-ocr.github.io/tessdoc/Installation.html) (on Windows, use the UB Mannheim installer linked from that page). Set `OCR_TESSERACT_CMD` in `.env` to its install path; OCR is skipped when it is not configured.
 
 ### Installation
 
