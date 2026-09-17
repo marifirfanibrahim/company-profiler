@@ -344,8 +344,20 @@ python run.py
 
 ### Updating the Lock
 
+Run these steps in Git Bash. `uv pip compile` writes only header lines 1-2 of `requirements.lock`; lines 3-5 (platform, freeze source and date, edit note) are notes that step 4 saves before compiling and puts back afterwards.
+
 1. Edit the ranges in `requirements.txt`.
 2. Install into `.venv` and confirm `python run.py` reaches profiles db, document store and pipeline `[OK]`.
-3. Save that venv's `uv pip freeze` output, minus any pip and wheel lines, as `boot-verified-freeze.txt` next to a copy of `requirements.txt`, outside the repository.
-4. In that folder, run the `uv pip compile` command recorded on line 2 of `requirements.lock`, then copy the result back.
+3. Create a folder outside the repository and copy `requirements.txt` and `requirements.lock` into it. From the repository root, save that venv's freeze, minus any pip and wheel lines, into the folder as `boot-verified-freeze.txt`:
+    ```bash
+    uv pip freeze --python .venv/Scripts/python.exe | grep -vE '^(pip|wheel)==' > /path/to/folder/boot-verified-freeze.txt
+    ```
+4. In that folder, save lines 3-5, run the `uv pip compile` command recorded on line 2 of `requirements.lock`, then put lines 3-5 back:
+    ```bash
+    sed -n 3,5p requirements.lock > lock-notes.txt
+    uv pip compile requirements.txt -c boot-verified-freeze.txt --python-version 3.10.20 --python-platform x86_64-pc-windows-msvc --annotation-style line -o requirements.lock
+    { head -n 2 requirements.lock; cat lock-notes.txt; tail -n +3 requirements.lock; } > requirements.lock.new
+    mv requirements.lock.new requirements.lock
+    ```
+    Update the freeze date on line 4 (and line 3 if the platform or Python version changed), then copy `requirements.lock` back into the repository.
 5. Confirm `uv pip sync requirements.lock --dry-run` reports `Would make no changes`.
