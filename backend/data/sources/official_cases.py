@@ -8,6 +8,7 @@ import re
 from typing import List, Dict, Any
 from urllib.parse import quote_plus
 
+import httpx
 from bs4 import BeautifulSoup
 from haystack.core.component import component
 from haystack.dataclasses import Document
@@ -281,8 +282,13 @@ class OfficialCasesRetriever:
                 # build search url
                 search_url = base_url.rstrip("/") + search_path.format(query=encoded_query)
 
-                # fetch search page
-                response = client.get(search_url)
+                # fetch search page, skipping this site on a fetch error
+                try:
+                    response = client.get(search_url)
+                except httpx.HTTPError as exc:
+                    # one site failing (bad cert chain, timeout, etc.) must not abort the others
+                    print(f"[SOURCE] {self.source_id} site '{site['id']}' ({site_name}) fetch failed: {exc} — skipping")
+                    continue
                 if response.status_code != 200:
                     continue
 
