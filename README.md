@@ -234,14 +234,14 @@ Key store files:
 ### Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
-1.  **Python 3.10.2 or newer 3.10.x** (tested on 3.10.20; 3.10.11 resolves to identical pins): required. 3.10.0 and 3.10.1 need extra packages (`importlib-metadata`, `zipp`) that the lock does not contain, and 3.11+ is not supported because of the `gliner`, `glirel` and `torch` pins. Install it with `uv` (`uv python install 3.10`, shown under Installation), or with the [python.org 3.10.11 Windows installer](https://www.python.org/downloads/release/python-31011/).
+1.  **Python 3.10.2 or newer 3.10.x** (tested on 3.10.20; 3.10.11 resolves to identical pins): required. 3.10.0 and 3.10.1 need extra packages (`importlib-metadata`, `zipp`) that the lock does not contain, and 3.11+ is not supported: the lock is resolved and tested for CPython 3.10 only (3.10.2 or newer), newer Pythons are untested, and moving to a newer Python is tracked as future work. Install it with `uv` (`uv python install 3.10`, shown under Installation), or with the [python.org 3.10.11 Windows installer](https://www.python.org/downloads/release/python-31011/).
 2.  **uv** (recommended): follow the [installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 3.  **Ollama**: download it from [ollama.com](https://ollama.com), then pull the default model:
     ```powershell
     ollama pull llama3:8b
     ```
 4.  **Google Chrome**: used by Selenium for Bursa Malaysia scraping.
-5. (OPTIONAL) **Tesseract-OCR**: install it by following the [official Tesseract installation docs](https://tesseract-ocr.github.io/tessdoc/Installation.html) (on Windows, use the UB Mannheim installer linked from that page). OCR is off by default: `OCR_ENABLED` is hard-coded to `False` in `backend/configuration/config.py` and is not read from `.env`, so OCR never runs unless that constant is changed to `True`. When OCR is enabled, the app uses the path in `OCR_TESSERACT_CMD` (set in `.env`) if that file exists; if the variable is unset or the path is invalid, it looks for `tesseract` on PATH instead. If neither is found, OCR returns no text and extraction continues without it.
+5. (OPTIONAL) **Tesseract-OCR**: install it by following the [official Tesseract installation docs](https://tesseract-ocr.github.io/tessdoc/Installation.html) (on Windows, use the UB Mannheim installer linked from that page). OCR is off by default: `OCR_ENABLED` is hard-coded to `False` in `backend/configuration/config.py` and is not read from `.env`, so OCR never runs unless that constant is changed to `True`. When OCR is enabled, the app uses the path in `OCR_TESSERACT_CMD` (set in `.env`) if that file exists; if the variable is unset or the path is invalid, it looks for `tesseract` on PATH instead. If neither is found, OCR returns no text and extraction continues without it. `OCR_TESSERACT_CMD` must be the full path to the `tesseract.exe` file, not its install folder: a folder also passes the existence check, so the PATH fallback is skipped and OCR silently returns no text.
 
 ### Installation
 
@@ -259,7 +259,7 @@ Before you begin, ensure you have the following installed on your system:
     uv venv --python 3.10
     uv pip sync requirements.lock
     ```
-    These `uv` commands are the same in PowerShell and Git Bash, and none of them needs the venv to be activated. `uv venv` does not install pip into the environment, so use `uv pip` for later package commands, or create the venv with `uv venv --seed --python 3.10` if you need `pip` itself.
+    These `uv` commands are the same in PowerShell and Git Bash, and none of them needs the venv to be activated; to run any other command without activating, prefix it with `uv run` (for example `uv run python run.py`). `uv venv` does not install pip into the environment, so use `uv pip` for later package commands, or create the venv with `uv venv --seed --python 3.10` if you need `pip` itself.
 
     **Option B: pip**
 
@@ -279,6 +279,7 @@ Before you begin, ensure you have the following installed on your system:
     (run `python -m venv` with a Python 3.10.2 or newer 3.10.x interpreter)
 
     > - On a default Windows client, PowerShell's execution policy blocks `Activate.ps1` with "running scripts is disabled on this system". `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force` lifts that for the current PowerShell window only and leaves the machine and user policy unchanged; run it again in each new window before activating.
+    > - In Git Bash, `source .venv/Scripts/activate` for a venv made with `python -m venv` only works from a folder on the same drive as the venv, because Python 3.10's activate script does not convert Windows paths the way uv's does. Git Bash users should prefer Option A or `uv run`.
 
     > - `requirements.lock` holds the exact tested versions and is the supported install path. `requirements.txt` holds the version ranges and upper bounds (with each bound's reason in a comment) and is only the input for regenerating the lock.
     > - The lock targets Windows x64 (`win_amd64`) with CPython 3.10.2 or newer 3.10.x (tested on 3.10.20); see the Linux Note below.
@@ -298,7 +299,7 @@ Before you begin, ensure you have the following installed on your system:
     - `FLASK_ENV`: `development`, `production` or `testing`; when unset the app runs as `production`.
     - `OPENAI_API_KEY`: only needed for OpenAI models.
     - `ANTHROPIC_API_KEY`: only needed for Anthropic models.
-    - `OCR_TESSERACT_CMD`: optional, full path to `tesseract.exe`; only used when `OCR_ENABLED` is `True` in `backend/configuration/config.py`, and `tesseract` on PATH is used when it is unset or invalid.
+    - `OCR_TESSERACT_CMD`: optional, full path to the `tesseract.exe` file (not the folder); only used when `OCR_ENABLED` is `True` in `backend/configuration/config.py`, and `tesseract` on PATH is used when it is unset or invalid.
     - `FLASK_SECRET_KEY`: a long random string.
     - `HTTP_VERIFY_TLS`: optional, defaults to `true`.
 
@@ -332,7 +333,7 @@ export DISABLE_SAFETENSORS_CONVERSION=true
 ```
 Without it, `transformers` starts a background download of an extra ~874 MB safetensors copy of `microsoft/deberta-v3-large` that the app does not need, and that download competes with the real model downloads for bandwidth.
 
-**Optional pre-download** of the largest model, the reranker (about 2.3 GB; an interrupted download resumes when re-run). With the venv active:
+**Optional pre-download** of the largest model, the reranker (about 2.3 GB; an interrupted download resumes when re-run). With the venv active (or prefix the command with `uv run`, as in `uv run hf download BAAI/bge-reranker-v2-m3`):
 
 PowerShell:
 ```powershell
@@ -345,7 +346,7 @@ export DISABLE_SAFETENSORS_CONVERSION=true
 hf download BAAI/bge-reranker-v2-m3
 ```
 
-**Moving the caches:** to keep models or NLTK data somewhere else, set `HF_HOME` and/or `NLTK_DATA` in the shell before `python run.py` — not in `.env`, because a value in `.env` is ignored when the variable is already set in the environment. Example (paths below are illustrative):
+**Moving the caches:** to keep models or NLTK data somewhere else, set `HF_HOME` and/or `NLTK_DATA` in the shell before `python run.py` (with the venv active, or `uv run python run.py` without activating it) — not in `.env`, because a value in `.env` is ignored when the variable is already set in the environment. Example (paths below are illustrative):
 
 PowerShell:
 ```powershell
