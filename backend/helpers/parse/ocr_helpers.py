@@ -12,6 +12,7 @@ from typing import List
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
+import httpx
 from PIL import Image
 import pytesseract
 
@@ -202,12 +203,17 @@ def ocr_from_html_images(
     ) as client:
         parts = []
         for u in urls:
-            # fetch bytes
-            data = fetch_image_bytes(
-                client=client,
-                url=u,
-                max_bytes=max_bytes,
-            )
+            # fetch bytes, skipping this image on any transport/http/tls error
+            try:
+                data = fetch_image_bytes(
+                    client=client,
+                    url=u,
+                    max_bytes=max_bytes,
+                )
+            except httpx.HTTPError as e:
+                # log the failed fetch and move on to the next image
+                logger.warning(f"[OCR] image fetch failed for {u}: {e} — skipping image")
+                continue
             if not data:
                 continue
 
