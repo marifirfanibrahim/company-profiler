@@ -399,12 +399,12 @@ Run these steps in Git Bash. `uv pip compile` writes only header lines 1-2 of `r
     ```bash
     uv pip freeze --python .venv/Scripts/python.exe | grep -vE '^(pip|wheel)==' > /path/to/folder/boot-verified-freeze.txt
     ```
-4. In that folder, save lines 3-5, run the `uv pip compile` command recorded on line 2 of `requirements.lock`, then put lines 3-5 back:
+4. In that folder, save lines 3-5, run the `uv pip compile` command recorded on line 2 of `requirements.lock`, then put lines 3-5 back. The commands are chained with `&&`, so if the compile fails nothing after it runs and `requirements.lock` is left as it was:
     ```bash
-    sed -n 3,5p requirements.lock > lock-notes.txt
-    uv pip compile requirements.txt -c boot-verified-freeze.txt --python-version 3.10.20 --python-platform x86_64-pc-windows-msvc --annotation-style line -o requirements.lock
-    { head -n 2 requirements.lock; cat lock-notes.txt; tail -n +3 requirements.lock; } > requirements.lock.new
+    sed -n 3,5p requirements.lock > lock-notes.txt &&
+    uv pip compile requirements.txt -c boot-verified-freeze.txt --python-version 3.10.20 --python-platform x86_64-pc-windows-msvc --annotation-style line -o requirements.lock &&
+    { head -n 2 requirements.lock; cat lock-notes.txt; tail -n +3 requirements.lock; } > requirements.lock.new &&
     mv requirements.lock.new requirements.lock
     ```
     Update the freeze date on line 4 (and line 3 if the platform or Python version changed), then copy `requirements.lock` back into the repository.
-5. Confirm `uv pip sync requirements.lock --dry-run` reports `Would make no changes`.
+5. From the repository root, confirm `uv pip sync requirements.lock --python .venv/Scripts/python.exe --dry-run` reports `Would make no changes`.
