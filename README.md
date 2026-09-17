@@ -234,7 +234,7 @@ Key store files:
 ### Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
-1.  **Python 3.10**: required; newer versions are not supported because of the `gliner`, `glirel` and `torch` pins. Install it with `uv` (`uv python install 3.10`, shown under Installation), or with the [python.org 3.10.11 Windows installer](https://www.python.org/downloads/release/python-31011/).
+1.  **Python 3.10.2 or newer 3.10.x** (tested on 3.10.20; 3.10.11 resolves to identical pins): required. 3.10.0 and 3.10.1 need extra packages (`importlib-metadata`, `zipp`) that the lock does not contain, and 3.11+ is not supported because of the `gliner`, `glirel` and `torch` pins. Install it with `uv` (`uv python install 3.10`, shown under Installation), or with the [python.org 3.10.11 Windows installer](https://www.python.org/downloads/release/python-31011/).
 2.  **uv** (recommended): follow the [installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 3.  **Ollama**: download it from [ollama.com](https://ollama.com), then pull the default model:
     ```powershell
@@ -267,10 +267,10 @@ Before you begin, ensure you have the following installed on your system:
     .venv\Scripts\Activate.ps1
     pip install -r requirements.lock
     ```
-    (run `python -m venv` with a Python 3.10 interpreter)
+    (run `python -m venv` with a Python 3.10.2 or newer 3.10.x interpreter)
 
     > - `requirements.lock` holds the exact tested versions and is the supported install path. `requirements.txt` holds the version ranges and upper bounds (with each bound's reason in a comment) and is only the input for regenerating the lock.
-    > - The lock targets Windows x64 (`win_amd64`) with CPython 3.10; see the Linux Note below.
+    > - The lock targets Windows x64 (`win_amd64`) with CPython 3.10.2 or newer 3.10.x (tested on 3.10.20); see the Linux Note below.
     > - `seqeval` 1.2.2 has no wheel on PyPI, so a first install on a machine with a cold package cache builds it from source and needs network access for that build.
 
 3.  **Create the `.env` file:**
@@ -340,7 +340,7 @@ python run.py
 
 ### Linux Note
 
-`requirements.lock` is resolved for Windows x64 (`win_amd64`) and CPython 3.10 only. On Linux, PyPI's `torch` 2.14.0 is the CUDA 13 build (about 3 GB including the `nvidia-*` and `triton` packages). A Linux host needs its own lock; on a machine without a GPU, resolve `torch` from the PyTorch CPU index instead: `https://download.pytorch.org/whl/cpu`.
+`requirements.lock` is resolved for Windows x64 (`win_amd64`) and CPython 3.10.x (3.10.2 or newer) only. On Linux, PyPI's `torch` 2.14.0 is the CUDA 13 build (about 3 GB including the `nvidia-*` and `triton` packages). A Linux host needs its own lock; on a machine without a GPU, resolve `torch` from the PyTorch CPU index instead: `https://download.pytorch.org/whl/cpu`.
 
 ### Updating the Lock
 
