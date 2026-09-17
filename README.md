@@ -234,14 +234,14 @@ Key store files:
 ### Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
-1.  **Python 3.10.2 or newer 3.10.x** (tested on 3.10.20; 3.10.11 resolves to identical pins): required. 3.10.0 and 3.10.1 need extra packages (`importlib-metadata`, `zipp`) that the lock does not contain, and 3.11+ is not supported: the lock is resolved and tested for CPython 3.10 only (3.10.2 or newer), newer Pythons are untested, and moving to a newer Python is tracked as future work. Install it with `uv` (`uv python install 3.10`, shown under Installation), or with the [python.org 3.10.11 Windows installer](https://www.python.org/downloads/release/python-31011/).
+1.  **Python 3.10.2 or newer 3.10.x** (tested on 3.10.20; 3.10.11 resolves to identical pins): required. 3.10.0 and 3.10.1 need extra packages (`importlib-metadata`, `zipp`) that the lock does not contain, and 3.11+ is not supported: the lock is resolved and tested for CPython 3.10 only (3.10.2 or newer), and newer Pythons are untested; supporting one needs a new lock generated and boot-tested on that version. Install it with `uv` (`uv python install 3.10`, shown under Installation), or with the [python.org 3.10.11 Windows installer](https://www.python.org/downloads/release/python-31011/).
 2.  **uv** (recommended): follow the [installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 3.  **Ollama**: download it from [ollama.com](https://ollama.com), then pull the default model:
     ```powershell
     ollama pull llama3:8b
     ```
 4.  **Google Chrome**: used by Selenium for Bursa Malaysia scraping.
-5. (OPTIONAL) **Tesseract-OCR**: install it by following the [official Tesseract installation docs](https://tesseract-ocr.github.io/tessdoc/Installation.html) (on Windows, use the UB Mannheim installer linked from that page). OCR is off by default: `OCR_ENABLED` is hard-coded to `False` in `backend/configuration/config.py` and is not read from `.env`, so OCR never runs unless that constant is changed to `True`. When OCR is enabled, the app uses the path in `OCR_TESSERACT_CMD` (set in `.env`) if that file exists; if the variable is unset or the path is invalid, it looks for `tesseract` on PATH instead. If neither is found, OCR returns no text and extraction continues without it. `OCR_TESSERACT_CMD` must be the full path to the `tesseract.exe` file, not its install folder: a folder also passes the existence check, so the PATH fallback is skipped and OCR silently returns no text.
+5. (OPTIONAL) **Tesseract-OCR**: install it by following the [official Tesseract installation docs](https://tesseract-ocr.github.io/tessdoc/Installation.html) (on Windows, use the UB Mannheim installer linked from that page). OCR is off by default: `OCR_ENABLED` is hard-coded to `False` in `backend/configuration/config.py` and is not read from `.env`, so OCR never runs unless that constant is changed to `True`. When OCR is enabled, the app uses the path in `OCR_TESSERACT_CMD` (set in `.env`) if that file exists; if the variable is unset or the path is invalid, it looks for `tesseract` on PATH instead. If neither is found, OCR returns no text and extraction continues without it. `OCR_TESSERACT_CMD` must be the full path to the `tesseract.exe` file, not its install folder: a folder also passes the existence check, so the PATH fallback is skipped and OCR returns no text; the only sign is an `Access is denied` warning logged for each image.
 
 ### Installation
 
@@ -279,7 +279,7 @@ Before you begin, ensure you have the following installed on your system:
     (run `python -m venv` with a Python 3.10.2 or newer 3.10.x interpreter)
 
     > - On a default Windows client, PowerShell's execution policy blocks `Activate.ps1` with "running scripts is disabled on this system". `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force` lifts that for the current PowerShell window only and leaves the machine and user policy unchanged; run it again in each new window before activating.
-    > - In Git Bash, `source .venv/Scripts/activate` for a venv made with `python -m venv` only works from a folder on the same drive as the venv, because Python 3.10's activate script does not convert Windows paths the way uv's does. Git Bash users should prefer Option A or `uv run`.
+    > - In Git Bash, `source .venv/Scripts/activate` for a venv made with `python -m venv` only finds the venv's `python` while your current folder is on the same drive as the venv (the repository root is fine), because Python 3.10's activate script does not convert Windows paths the way uv's does; changing to another drive after activating breaks `python`. Git Bash users should prefer Option A or `uv run`.
 
     > - `requirements.lock` holds the exact tested versions and is the supported install path. `requirements.txt` holds the version ranges and upper bounds (with each bound's reason in a comment) and is only the input for regenerating the lock.
     > - The lock targets Windows x64 (`win_amd64`) with CPython 3.10.2 or newer 3.10.x (tested on 3.10.20); see the Linux Note below.
@@ -408,4 +408,4 @@ Run these steps in Git Bash. `uv pip compile` writes only header lines 1-2 of `r
     mv requirements.lock.new requirements.lock
     ```
     Update the freeze date on line 4 (and line 3 if the platform or Python version changed), then copy `requirements.lock` back into the repository.
-5. From the repository root, confirm `uv pip sync requirements.lock --python .venv/Scripts/python.exe --dry-run` reports `Would make no changes`.
+5. From the repository root, confirm `uv pip sync requirements.lock --python .venv/Scripts/python.exe --dry-run` reports `Would make no changes`. A venv made with `python -m venv` or `uv venv --seed` also contains `pip` (and possibly `wheel`), which the lock leaves out, so the dry run lists them as packages it would uninstall; that is expected, and any other difference means the lock and the venv do not match.
