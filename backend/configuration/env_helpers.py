@@ -4,7 +4,15 @@ wrap os.environ access with coercion and fail-fast semantics
 no defaults - fail fast on missing required values
 """
 
+import logging
 import os
+
+# module-level logger
+logger = logging.getLogger(__name__)
+
+# recognized boolean tokens, compared after strip + lowercase
+_TRUE_VALUES = ("1", "true", "yes", "on")
+_FALSE_VALUES = ("0", "false", "no", "off")
 
 
 def env_str(name: str, default: str = None, required: bool = False) -> str:
@@ -28,12 +36,27 @@ def env_bool(name: str, default: bool = False) -> bool:
     # read raw value from environment
     val = os.environ.get(name)
 
-    # unset falls back to the given default
-    if val is None:
+    # treat unset or blank/whitespace-only as the given default, matching env_str
+    if val is None or val.strip() == "":
         return default
 
-    # coerce common truthy strings, case-insensitively
-    return val.strip().lower() in ("1", "true", "yes", "on")
+    # normalize for case-insensitive comparison
+    low = val.strip().lower()
+
+    # coerce recognized truthy tokens
+    if low in _TRUE_VALUES:
+        return True
+
+    # coerce recognized falsy tokens
+    if low in _FALSE_VALUES:
+        return False
+
+    # warn on an unrecognized value and keep the default rather than guessing
+    logger.warning(
+        f"environment variable '{name}' has unrecognized boolean value '{val}'; "
+        f"expected one of {_TRUE_VALUES + _FALSE_VALUES} - using default {default}"
+    )
+    return default
 
 
 def env_int(name: str, default: int = None, required: bool = False) -> int:
