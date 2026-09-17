@@ -266,7 +266,7 @@ Before you begin, ensure you have the following installed on your system:
     PowerShell:
     ```powershell
     python -m venv .venv
-    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
     .venv\Scripts\Activate.ps1
     pip install -r requirements.lock
     ```
@@ -278,7 +278,7 @@ Before you begin, ensure you have the following installed on your system:
     ```
     (run `python -m venv` with a Python 3.10.2 or newer 3.10.x interpreter)
 
-    > - On a default Windows client, PowerShell's execution policy blocks `Activate.ps1` with "running scripts is disabled on this system". `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` lifts that for the current PowerShell window only and leaves the machine and user policy unchanged; run it again in each new window before activating.
+    > - On a default Windows client, PowerShell's execution policy blocks `Activate.ps1` with "running scripts is disabled on this system". `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force` lifts that for the current PowerShell window only and leaves the machine and user policy unchanged; run it again in each new window before activating.
 
     > - `requirements.lock` holds the exact tested versions and is the supported install path. `requirements.txt` holds the version ranges and upper bounds (with each bound's reason in a comment) and is only the input for regenerating the lock.
     > - The lock targets Windows x64 (`win_amd64`) with CPython 3.10.2 or newer 3.10.x (tested on 3.10.20); see the Linux Note below.
@@ -371,7 +371,7 @@ python run.py
 
     PowerShell:
     ```powershell
-    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
     .venv\Scripts\Activate.ps1
     python run.py
     ```
