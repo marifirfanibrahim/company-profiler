@@ -241,7 +241,7 @@ Before you begin, ensure you have the following installed on your system:
     ollama pull llama3:8b
     ```
 4.  **Google Chrome**: used by Selenium for Bursa Malaysia scraping.
-5. (OPTIONAL) **Tesseract-OCR**: install it by following the [official Tesseract installation docs](https://tesseract-ocr.github.io/tessdoc/Installation.html) (on Windows, use the UB Mannheim installer linked from that page). Set `OCR_TESSERACT_CMD` in `.env` to its install path; OCR is skipped when it is not configured.
+5. (OPTIONAL) **Tesseract-OCR**: install it by following the [official Tesseract installation docs](https://tesseract-ocr.github.io/tessdoc/Installation.html) (on Windows, use the UB Mannheim installer linked from that page). OCR is off by default: `OCR_ENABLED` is hard-coded to `False` in `backend/configuration/config.py` and is not read from `.env`, so OCR never runs unless that constant is changed to `True`. When OCR is enabled, the app uses the path in `OCR_TESSERACT_CMD` (set in `.env`) if that file exists; if the variable is unset or the path is invalid, it looks for `tesseract` on PATH instead. If neither is found, OCR returns no text and extraction continues without it.
 
 ### Installation
 
@@ -298,7 +298,7 @@ Before you begin, ensure you have the following installed on your system:
     - `FLASK_ENV`: `development`, `production` or `testing`; when unset the app runs as `production`.
     - `OPENAI_API_KEY`: only needed for OpenAI models.
     - `ANTHROPIC_API_KEY`: only needed for Anthropic models.
-    - `OCR_TESSERACT_CMD`: optional, full path to `tesseract.exe`.
+    - `OCR_TESSERACT_CMD`: optional, full path to `tesseract.exe`; only used when `OCR_ENABLED` is `True` in `backend/configuration/config.py`, and `tesseract` on PATH is used when it is unset or invalid.
     - `FLASK_SECRET_KEY`: a long random string.
     - `HTTP_VERIFY_TLS`: optional, defaults to `true`.
 
